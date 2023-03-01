@@ -17,6 +17,7 @@ In general, each problem should contain
 * Remark
 * Input Format
 * Output Format
+* Example
 * Solution
 * Proof
 * Time complexity
@@ -25,3 +26,5 @@ In general, each problem should contain
 Though some sections may not be included in some cases.
 
 For example, proof may not be included if the solution is straightforward enough.
+
+**Each section should be concise and has no nonsence.**
