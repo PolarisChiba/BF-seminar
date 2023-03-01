@@ -12,7 +12,6 @@
 
 ## Remark
 
-
 ### PC
 
 I can't prove the solution to PC.
@@ -20,6 +19,10 @@ I can't prove the solution to PC.
 There may be some relationship with bitmask DP.
 
 Or the best route never be influnced by the special cases...?
+
+### PD
+
+The dp way to solve PD is yet to be studied.
 
 ### PE
 
