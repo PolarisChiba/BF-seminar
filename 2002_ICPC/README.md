@@ -24,10 +24,6 @@ Or the best route never be influnced by the special cases...?
 
 The dp way to solve PD is yet to be studied.
 
-### PE
-
-The statement of PE is confusing.
-
 ### PI
 
 The 3-rd sample of PI seems to be wrong.
