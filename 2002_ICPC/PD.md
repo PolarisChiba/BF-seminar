@@ -20,6 +20,10 @@ Even though you may arrive earlier, you still have to want for the next ferry.
 
 Calculate the minimum time needed to complete the route and the minimum possible value of the maximum velocity on each road to reach the minimum time.
 
+## Remark
+
+It's guaranteed the minimum time needed doesn't exceed 10 hr.
+
 ## Input Format
 
 $s > 0$
