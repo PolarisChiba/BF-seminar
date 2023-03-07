@@ -159,3 +159,152 @@ int main() {
 	}
 }
 ```
+
+## Other solution
+
+First one can see if the last section is road then the velocity needed is 80km/hr.
+
+Hence we can consider the case the last section is ferry only.
+
+Notice only departure time of each ferry of each hour is important, since we have to wait if arriving early and the time we cross the river is determined by that as well.
+
+Hence, for each time we calculate the least maximum velocity we need by dynamic programming.
+
+Formally, $f(i, j, k)$ means the answer to $i$-th river, $j$ hour, and $k$-th ferry.
+
+Then iterate all $f(i + 1, 0\sim 9, 0\sim ferry[i+1].size())$, and use the length of the $i+1$-th road to update $f(i, j, k)$.
+
+Time complexity: 
+* Input: $O(s+\sum f)$
+* Calculate minimum time needed: $O(s+\sum \log{f})$
+* Initial dp array: $O(10\times \sum f + \log{f_{n-1}})$
+* Calculate dp: $O(10^2\times \sum (f_i\times f_{i+1}))$
+* Get answer to least velocity needed: $O(10\times f_{0})$
+
+$O(s+ 10^2\times\sum (f_i\times f_{i+1}))$ in total.
+
+
+## AC code
+
+```cpp
+#include <bits/stdc++.h>
+#define debug(a) cout << #a << " = " << a << "\n";
+using namespace std;
+
+typedef long long ll;
+ll MOD = 1000000007LL;
+
+int n;
+vector<int> road; // length of each road
+vector<int> cross; // crossing time for ferry
+vector<vector<int>> ferry; // time ferry arrives
+vector<vector<double>> velocity; 
+int min_time;
+
+void Clear() {
+	road.clear();
+	cross.clear();
+	ferry.clear();
+	min_time = 0;
+}
+void Input() {
+	road.push_back(0);
+	bool pre = false; // false for road and true for ferry
+
+	while ( n -- ) {
+		string a, b, c;
+		int r;
+		cin >> a >> b >> c >> r;
+		if (c == "road") {
+			if (pre == false) road.back() += r;
+			else road.push_back(r), pre = false;
+		} else {
+			if (pre == true) road.push_back(0);
+			int k;
+			cin >> k;
+			cross.push_back(r);
+			ferry.push_back(vector<int>(k));
+			for (auto &i : ferry.back()) cin >> i;
+			pre = true;
+		}
+	}
+	n = (int)road.size();
+}
+void CalcMinTime() {
+	for (int i = 0; i < n; ++ i) {
+		min_time += road[i] * 3600 / 80;
+
+		if ((int)ferry.size() > i) {
+			int min_level = (min_time / 60 % 60) + (min_time % 60 != 0);
+			auto it = lower_bound(ferry[i].begin(), ferry[i].end(), min_level);
+			if (it == ferry[i].end()) {
+				min_time += 3600;
+				it = ferry[i].begin();
+			}
+			min_time = (min_time / 3600) * 3600 + (*it) * 60 + cross[i] * 60;
+		}
+	}
+}
+int id(int i, int j) { // i hr j-th ferry
+	return j * 10 + i;
+}
+double CalcVelocity() {
+	velocity.resize(n);
+	for (int i = 0; i < n; ++ i)
+		velocity[i].assign((int)ferry[i].size() * 10, 80);
+
+	int res = ((min_time - cross.back() * 60) / 60) % 60;
+	int it = lower_bound(ferry.back().begin(), ferry.back().end(), res) - ferry.back().begin();
+	velocity[n - 1][id((min_time - cross.back() * 60) / 3600, it)] = 0;
+
+	for (int i = n - 2; i >= 0; -- i) {
+		for (int j = 0; j < 10; ++ j) {
+			for (int k = j; k < 10; ++ k) {
+				for (int a = 0; a < (int)ferry[i].size(); ++ a) {
+					for (int b = 0; b < (int)ferry[i + 1].size(); ++ b) {
+						int p = j * 60 + ferry[i][a] + cross[i];
+						int q = k * 60 + ferry[i + 1][b];
+						if (p > q) continue;
+
+						if (road[i + 1] != 0 && p != q)
+							velocity[i][id(j, a)] = min(velocity[i][id(j, a)], max(velocity[i + 1][id(k, b)], 60.0 * road[i + 1] / (q - p)));
+						else if (road[i + 1] == 0)
+							velocity[i][id(j, a)] = min(velocity[i][id(j, a)], velocity[i + 1][id(k, b)]);
+					}
+				}
+			}
+		}
+	}
+	double ans = 80;
+	for (int i = 0; i < 10; ++ i) {
+		for (int j = 0; j < (int)ferry[0].size(); ++ j) {
+			if (road[0] != 0 && i * 60 + ferry[0][j] != 0)
+				ans = min(ans, max(velocity[0][id(i, j)], 60.0 * road[0] / (i * 60 + ferry[0][j])));
+			else if (road[0] == 0)
+				ans = min(ans, velocity[0][id(i, j)]);
+		}
+	}
+	return ans;
+}
+
+int main() {
+	ios::sync_with_stdio(0); cin.tie(0);
+	
+	int _ = 1;
+	while (cin >> n && n) {
+		Clear();
+		Input();
+		CalcMinTime();
+
+		double min_v = 80.00;
+		if (ferry.size() == road.size())
+			min_v = CalcVelocity();
+		
+		cout << "Test Case " << _ ++ << ": ";
+		cout << setw(2) << setfill('0') << min_time / 3600 << ":";
+		cout << setw(2) << setfill('0') << min_time / 60 % 60 << ":";
+		cout << setw(2) << setfill('0') << min_time % 60 << " ";
+		cout << fixed << setprecision(2) << min_v << "\n\n";
+	}
+}
+```
