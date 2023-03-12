@@ -20,9 +20,9 @@ There may be some relationship with bitmask DP.
 
 Or the best route never be influnced by the special cases...?
 
-### PD
+### PE
 
-The dp way to solve PD is yet to be studied.
+
 
 ### PI
 
