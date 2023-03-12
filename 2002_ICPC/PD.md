@@ -70,10 +70,6 @@ Notice that under 80km/hr, the consuming time will be integer with respect to se
 
 ## AC code
 
-The judge is down now so I just put my origin code without modifying the bound of binary search.
-
-I'll replace it with new version if the judge recovers.
-
 ```cpp
 #include <bits/stdc++.h>
 #define debug(a) cout << #a << " = " << a << "\n";
@@ -83,6 +79,8 @@ using namespace std;
 
 typedef long long ll;
 ll MOD = 1000000007LL;
+
+const double eps = 1e-8;
 
 int n;
 vector<ll> v;
@@ -142,7 +140,7 @@ int main() {
 		ll mn = Calc(80);
 		double L = 0.00;
 		double R = 80.00;
-		while (R - L > 1e-6) {
+		while (round((R + eps) * 100) != round((L + eps) * 100)) {
 			double mid = (R + L) / 2.0;
 			if (mn == Calc(mid)) R = mid;
 			else L = mid;
