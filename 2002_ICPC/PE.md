@@ -30,7 +30,7 @@ $\dfrac{\sum t_i\times m_i}{\sum m_i}$ rounded to two digits to the right of the
 
 ## Solution
 
-Any MST algorithm will do.
+Any MST algorithm will do, while you can just use a modified version of Prim's algorithm as the code below.s
 
 ## AC code
 
@@ -98,11 +98,14 @@ Assume we know any two MST can transformed to each other by swapping edges one b
 
 Then we only need to show swapping one edge has no influence on the answer.
 
-Let the weight of the new edge added be $x$. Hence the weight of the edge removed is $x$ as well.
-
-Then the largest weight on the path between two end points of the new edge added is $x$.
-
 Check differnt situations and one can see the correctness.
 
 ### Proof 2
 
+For any MST $T$.
+
+Sort the edges by their weight and then put the one in $T$ ahead of that not in $T$ if they have the same weight.
+
+Then do the Kruskal's algorithm. We'll get a MST $T'$.
+
+We can show that $T=T'$ by contradiction.
