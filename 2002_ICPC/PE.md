@@ -102,10 +102,8 @@ Check differnt situations and one can see the correctness.
 
 ### Proof 2
 
+Sort the weight of the edges in acsending order and make them unique. Let it be $w_1, w_2, \cdots , w_m$.
+
 For any MST $T$.
 
-Sort the edges by their weight and then put the one in $T$ ahead of that not in $T$ if they have the same weight.
-
-Then do the Kruskal's algorithm. We'll get a MST $T'$.
-
-We can show that $T=T'$ by contradiction.
+We can use induction to show that we can construct the subgraph of $T$ induced by the edges with weight $w_1\sim w_k$ for any $k=1\sim m$ by Kruskal's algorithm.
